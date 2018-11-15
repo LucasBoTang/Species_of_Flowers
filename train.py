@@ -179,7 +179,8 @@ print("Test Loss: %f.. Test Accuracy : %f " % (test_loss, test_accuracy))
 # TODO: Save the checkpoint
 print('Saving the checkpoint...')
 model.class_to_idx = trainset.class_to_idx
-checkpoint = {'input_size': input_size,
+checkpoint = {'densenet': args.arch,
+              'input_size': input_size,
               'hidden_layers': hidden_sizes,
               'output_size': output_size,
               'state_dict': model.state_dict(),

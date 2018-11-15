@@ -24,7 +24,10 @@ def load_checkpoint(filepath):
                                nn.Linear(checkpoint['hidden_layers'][1],  checkpoint['output_size']),
                                nn.LogSoftmax(dim=1))
 
-    model = models.densenet121(pretrained=True)
+    if checkpoint['densenet']:
+        model = models.densenet121(pretrained=True)
+    else:
+        model = models.vgg16(pretrained=True)
     for param in model.parameters():
         param.requires_grad = False
     model.classifier = classifier
