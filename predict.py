@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 import argparse
 
+
 # TODO: Write a function that loads a checkpoint and rebuilds the model
 def load_checkpoint(filepath):
 
@@ -35,36 +36,34 @@ def load_checkpoint(filepath):
     return model
 
 
-
-# TODO: Write a function to process image
+# TODO: Process a PIL image for use in a PyTorch model
 def process_image(image):
     """
     Scales, crops, and normalizes a PIL image for a PyTorch model,
     returns an Numpy array
     """
 
-    print('Processing image...')
+    # Load, resize and crop
+    pl_img = Image.open(image).resize((256,256)).crop((16, 16, 240, 240))
 
-    # TODO: Process a PIL image for use in a PyTorch model
-    image_transforms = transforms.Compose([transforms.Resize(256),
-                                           transforms.CenterCrop(224),
-                                           transforms.ToTensor(),
-                                           transforms.Normalize([0.485, 0.456, 0.406],
-                                                                [0.229, 0.224, 0.225])])
+    # Normalize
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    np_img = np.array(pl_img) / 255
+    norm_img = (np_img - mean) / std
 
-    img = Image.open(image)
-    img = image_transforms(img)
+    # Transpose
+    img = norm_img.transpose((2,0,1))
 
-    return img
+    return torch.from_numpy(img)
 
 
-# TODO: Write a function to predict
+# TODO: Write a function to predict the class from an image file
 def predict(image_path, model, topk):
     """
     Predict the class (or classes) of an image using a trained deep learning model.
     """
 
-    # TODO: Implement the code to predict the class from an image file
     model.eval()
     img = process_image(image_path)
     tensor = img.type(torch.FloatTensor).to(device)
