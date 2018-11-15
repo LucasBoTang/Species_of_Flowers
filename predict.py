@@ -43,8 +43,21 @@ def process_image(image):
     returns an Numpy array
     """
 
-    # Load, resize and crop
-    pl_img = Image.open(image).resize((256,256)).crop((16, 16, 240, 240))
+    # Load
+    pl_img = Image.open(image)#.resize((256,256)).crop((16, 16, 240, 240))
+
+    # Resize and maintain ratio
+    width, height = pl_img.size
+    new_width = width * 256 // max(width, height)
+    new_height = height * 256 // max(width, height)
+    pl_img = pl_img.resize((new_width, new_height))
+
+    # Center crop
+    left = new_width // 2 - 112
+    down = new_height // 2 - 112
+    right = new_width // 2 + 112
+    up = new_height // 2 + 112
+    pl_img = pl_img.crop((left, down, right, up))
 
     # Normalize
     mean = np.array([0.485, 0.456, 0.406])
