@@ -1,4 +1,6 @@
-# Data Scientist Project
+# Data Scientist Nanodegree
+# Deep Learning
+## Project2: Species of Flowers
 
 Project code for Udacity's Data Scientist Nanodegree program. In this project, you will first develop code for an image classifier built with PyTorch, then you will convert it into a command line application.
 
